@@ -18,7 +18,7 @@ class App extends Component {
     }
     searchBGG(query) {
         console.log(query)
-        fetch(`http://api.collectio.jp/bggapi/search?query=${encodeURIComponent(query)}&type=boardgame`, {
+        fetch(`https://api.collectio.jp/bggapi/search?query=${encodeURIComponent(query)}&type=boardgame`, {
             mode: 'cors'
         }).then((r) => r.json()).then((r) => {
             console.log(r)
