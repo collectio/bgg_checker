@@ -21183,7 +21183,8 @@ var App = function (_Component) {
         _this.state = {
             query: '',
             message: null,
-            games: null
+            games: null,
+            showCreateButton: false
         };
         return _this;
     }
@@ -21205,8 +21206,8 @@ var App = function (_Component) {
             var _this3 = this;
 
             console.log(query);
-            if (query === '') return this.setState({ games: null, message: '' });
-            this.setState({ games: null, message: '検索中…' });
+            if (query === '') return this.setState({ games: null, message: '', showCreateButton: false });
+            this.setState({ games: null, message: '検索中…', showCreateButton: false });
             fetch('https://api.collectio.jp/bggapi/search?query=' + encodeURIComponent(query), {
                 mode: 'cors'
             }).then(function (r) {
@@ -21215,7 +21216,7 @@ var App = function (_Component) {
                 // console.log(r)
                 if (r.status === 'ok') {
                     if (r.data.items.total == 0) {
-                        _this3.setState({ message: '見つかりませんでした' });
+                        _this3.setState({ message: '見つかりませんでした', showCreateButton: _this3.refs.q.value });
                     } else if (r.data.items.total == 1) {
                         var game = r.data.items.item;
                         // console.log(game.name.value)
@@ -21313,13 +21314,21 @@ var App = function (_Component) {
                             game.name.value,
                             ' - ',
                             game.yearpublished ? game.yearpublished.value : '',
+                            '\xA0',
                             _react2.default.createElement(
                                 'a',
                                 { ref: game.id, target: '_blank' },
                                 '[\u691C\u7D22\u4E2D...]'
                             )
                         );
-                    })
+                    }),
+                    this.state.showCreateButton ? _react2.default.createElement(
+                        'a',
+                        { href: 'https://db.collectio.jp/wp-admin/post-new.php?post_title=' + encodeURIComponent(this.state.showCreateButton) + '&etitle=' + encodeURIComponent(this.state.showCreateButton), target: '_blank' },
+                        '\u300C',
+                        this.state.showCreateButton,
+                        '\u300D\u3067\u65B0\u898F\u4F5C\u6210'
+                    ) : null
                 )
             );
         }
@@ -21358,7 +21367,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '57320' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63916' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

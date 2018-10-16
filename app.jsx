@@ -8,6 +8,7 @@ class App extends Component {
             query: '',
             message: null,
             games: null,
+            showCreateButton: false, 
         };
     }
     componentDidMount() {
@@ -19,15 +20,15 @@ class App extends Component {
     }
     searchBGG(query) {
         console.log(query)
-        if (query==='') return this.setState({games: null, message: ''});
-        this.setState({games: null, message: '検索中…'});
+        if (query==='') return this.setState({games: null, message: '', showCreateButton: false});
+        this.setState({games: null, message: '検索中…', showCreateButton: false});
         fetch(`https://api.collectio.jp/bggapi/search?query=${encodeURIComponent(query)}`, {
             mode: 'cors'
         }).then((r) => r.json()).then((r) => {
             // console.log(r)
             if (r.status === 'ok') {
                 if (r.data.items.total == 0) {
-                    this.setState({message: '見つかりませんでした'});
+                    this.setState({message: '見つかりませんでした', showCreateButton: this.refs.q.value});
                 } else if (r.data.items.total == 1) {
                     const game = r.data.items.item;
                     // console.log(game.name.value)
@@ -91,9 +92,14 @@ class App extends Component {
                 {this.state.games && this.state.games.map((game) => (
                     <div className="game" key={game.id}>
                         {game.name.value} - {game.yearpublished ? game.yearpublished.value : ''}
-                        <a ref={game.id} target="_blank">[検索中...]</a>
+                        &nbsp;<a ref={game.id} target="_blank">[検索中...]</a>
                     </div>
                 ))}
+                {this.state.showCreateButton ? (
+                    <a href={`https://db.collectio.jp/wp-admin/post-new.php?post_title=${encodeURIComponent(this.state.showCreateButton)}&etitle=${encodeURIComponent(this.state.showCreateButton)}`} target="_blank">
+                        「{this.state.showCreateButton}」で新規作成
+                    </a>
+                ) : null}
             </div>
         </div>
     }
