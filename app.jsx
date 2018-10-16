@@ -41,7 +41,7 @@ class App extends Component {
                         this.search(game);
                     });
                     setTimeout(() => {
-                        games.slice(3, 10).map((game) => {
+                        games.slice(2, 10).map((game) => {
                             // console.log(game)
                             this.search(game);
                         });
