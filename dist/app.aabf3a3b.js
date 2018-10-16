@@ -21207,7 +21207,7 @@ var App = function (_Component) {
             console.log(query);
             if (query === '') return this.setState({ games: null, message: '' });
             this.setState({ games: null, message: '検索中…' });
-            fetch('https://api.collectio.jp/bggapi/search?query=' + encodeURIComponent(query) + '&type=boardgame', {
+            fetch('https://api.collectio.jp/bggapi/search?query=' + encodeURIComponent(query), {
                 mode: 'cors'
             }).then(function (r) {
                 return r.json();
@@ -21217,20 +21217,20 @@ var App = function (_Component) {
                     if (r.data.items.total == 0) {
                         _this3.setState({ message: '見つかりませんでした' });
                     } else if (r.data.items.total == 1) {
-                        // const game = r.data.items.item;
-                        console.log(game.name.value);
-                        _this3.search(game.id);
+                        var game = r.data.items.item;
+                        // console.log(game.name.value)
+                        _this3.search(game);
                         _this3.setState({ games: [game], message: '1件見つかりました' });
                     } else {
                         var games = r.data.items.item;
                         games.slice(0, 2).map(function (game) {
                             // console.log(game)
-                            _this3.search(game.id);
+                            _this3.search(game);
                         });
                         setTimeout(function () {
                             games.slice(3, 10).map(function (game) {
                                 // console.log(game)
-                                _this3.search(game.id);
+                                _this3.search(game);
                             });
                         }, 3000);
                         _this3.setState({ games: games, message: games.length + '件見つかりました' });
@@ -21240,10 +21240,10 @@ var App = function (_Component) {
         }
     }, {
         key: 'search',
-        value: function search(id) {
+        value: function search(game) {
             var _this4 = this;
 
-            var url = 'https://db.collectio.jp/wp-json/wp/v2/posts?filter[bgg]=etitle&filter[meta_value]=https://boardgamegeek.com/boardgame/' + id;
+            var url = 'https://db.collectio.jp/wp-json/wp/v2/posts?filter[bgg]=etitle&filter[meta_value]=https://boardgamegeek.com/boardgame/' + game.id;
             fetch(url, {
                 mode: 'cors'
             }).then(function (r) {
@@ -21251,13 +21251,25 @@ var App = function (_Component) {
             }).then(function (r) {
                 console.log(r);
                 if (r.length > 0) {
-                    var _game = r[0];
-                    console.log(_game.id);
-                    _this4.refs[id].href = 'https://db.collectio.jp/wp-admin/post.php?post=' + _game.id + '&action=edit';
-                    _this4.refs[id].innerHTML = '[' + _game.title.rendered + ']';
+                    var dbgame = r[0];
+                    console.log(dbgame);
+                    _this4.refs[game.id].href = 'https://db.collectio.jp/wp-admin/post.php?post=' + dbgame.id + '&action=edit';
+                    _this4.refs[game.id].innerHTML = '[' + dbgame.title.rendered + ']';
                 } else {
-                    _this4.refs[id].href = 'https://db.collectio.jp/wp-admin/post-new.php?post_title=test&etitle=test&bgg=test';
-                    _this4.refs[id].innerHTML = '[なし→新規追加]';
+                    fetch('https://api.collectio.jp/bggapi/thing?id=' + game.id, {
+                        mode: 'cors'
+                    }).then(function (r) {
+                        return r.json();
+                    }).then(function (r) {
+                        console.log(r);
+                        if (r.status === 'ok') {
+                            var bgggame = r.data.items.item;
+                            console.log(bgggame);
+                            var title = encodeURIComponent(bgggame.name.value);
+                            _this4.refs[game.id].href = 'https://db.collectio.jp/wp-admin/post-new.php?post_title=' + title + '&etitle=' + title + '&bgg=' + ('https://boardgamegeek.com/boardgame/' + game.id) + '&playingTime=' + bgggame.playingtime.value + '&minPlayers=' + bgggame.minplayers.value + '&maxPlayers=' + bgggame.maxplayers.value + '&playAge=' + bgggame.minage.value;
+                            _this4.refs[game.id].innerHTML = '[なし→新規追加]';
+                        }
+                    });
                 }
             });
         }
