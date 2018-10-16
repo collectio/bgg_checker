@@ -21212,21 +21212,27 @@ var App = function (_Component) {
             }).then(function (r) {
                 return r.json();
             }).then(function (r) {
-                console.log(r);
+                // console.log(r)
                 if (r.status === 'ok') {
                     if (r.data.items.total == 0) {
                         _this3.setState({ message: '見つかりませんでした' });
                     } else if (r.data.items.total == 1) {
-                        var game = r.data.items.item;
+                        // const game = r.data.items.item;
                         console.log(game.name.value);
                         _this3.search(game.id);
                         _this3.setState({ games: [game], message: '1件見つかりました' });
                     } else {
                         var games = r.data.items.item;
-                        games.map(function (game) {
-                            console.log(game);
+                        games.slice(0, 2).map(function (game) {
+                            // console.log(game)
                             _this3.search(game.id);
                         });
+                        setTimeout(function () {
+                            games.slice(3, 10).map(function (game) {
+                                // console.log(game)
+                                _this3.search(game.id);
+                            });
+                        }, 3000);
                         _this3.setState({ games: games, message: games.length + '件見つかりました' });
                     }
                 }
@@ -21245,9 +21251,13 @@ var App = function (_Component) {
             }).then(function (r) {
                 console.log(r);
                 if (r.length > 0) {
-                    console.log(r[0].id);
-                    _this4.refs[id].href = 'https://db.collectio.jp/wp-admin/post.php?post=' + r[0].id + '&action=edit';
-                    _this4.refs[id].innerHTML = '[データベースにあり]';
+                    var _game = r[0];
+                    console.log(_game.id);
+                    _this4.refs[id].href = 'https://db.collectio.jp/wp-admin/post.php?post=' + _game.id + '&action=edit';
+                    _this4.refs[id].innerHTML = '[' + _game.title.rendered + ']';
+                } else {
+                    _this4.refs[id].href = 'https://db.collectio.jp/wp-admin/post-new.php?post_title=test&etitle=test&bgg=test';
+                    _this4.refs[id].innerHTML = '[なし→新規追加]';
                 }
             });
         }

@@ -24,21 +24,27 @@ class App extends Component {
         fetch(`https://api.collectio.jp/bggapi/search?query=${encodeURIComponent(query)}&type=boardgame`, {
             mode: 'cors'
         }).then((r) => r.json()).then((r) => {
-            console.log(r)
+            // console.log(r)
             if (r.status === 'ok') {
                 if (r.data.items.total == 0) {
                     this.setState({message: '見つかりませんでした'});
                 } else if (r.data.items.total == 1) {
-                    const game = r.data.items.item;
+                    // const game = r.data.items.item;
                     console.log(game.name.value)
                     this.search(game.id);
                     this.setState({games: [game], message: '1件見つかりました'});
                 } else {
                     const games = r.data.items.item;
-                    games.map((game) => {
-                        console.log(game)
+                    games.slice(0, 2).map((game) => {
+                        // console.log(game)
                         this.search(game.id);
                     });
+                    setTimeout(() => {
+                        games.slice(3, 10).map((game) => {
+                            // console.log(game)
+                            this.search(game.id);
+                        });
+                    }, 3000);
                     this.setState({games: games, message: games.length + '件見つかりました'});
                 }
             }
@@ -51,9 +57,13 @@ class App extends Component {
         }).then((r) => r.json()).then((r) => {
             console.log(r)
             if (r.length > 0) {
-                console.log(r[0].id);
-                this.refs[id].href = `https://db.collectio.jp/wp-admin/post.php?post=${r[0].id}&action=edit`;
-                this.refs[id].innerHTML = '[データベースにあり]';
+                const game = r[0];
+                console.log(game.id);
+                this.refs[id].href = `https://db.collectio.jp/wp-admin/post.php?post=${game.id}&action=edit`;
+                this.refs[id].innerHTML = '[' + game.title.rendered + ']';
+            } else {
+                this.refs[id].href = `https://db.collectio.jp/wp-admin/post-new.php?post_title=test&etitle=test&bgg=test`;
+                this.refs[id].innerHTML = '[なし→新規追加]';
             }
         });
     }
