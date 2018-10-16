@@ -21266,7 +21266,7 @@ var App = function (_Component) {
                             var bgggame = r.data.items.item;
                             console.log(bgggame);
                             var title = encodeURIComponent(bgggame.name.value);
-                            _this4.refs[game.id].href = 'https://db.collectio.jp/wp-admin/post-new.php?post_title=' + title + '&etitle=' + title + '&bgg=' + ('https://boardgamegeek.com/boardgame/' + game.id) + '&playingTime=' + bgggame.playingtime.value + '&minPlayers=' + bgggame.minplayers.value + '&maxPlayers=' + bgggame.maxplayers.value + '&playAge=' + bgggame.minage.value;
+                            _this4.refs[game.id].href = 'https://db.collectio.jp/wp-admin/post-new.php?post_title=' + title + '&etitle=' + title + '&year=' + bgggame.yearpublished.value + '&bgg=' + ('https://boardgamegeek.com/boardgame/' + game.id) + '&playingTime=' + bgggame.playingtime.value + '&minPlayers=' + bgggame.minplayers.value + '&maxPlayers=' + bgggame.maxplayers.value + '&playAge=' + bgggame.minage.value;
                             _this4.refs[game.id].innerHTML = '[なし→新規追加]';
                         }
                     });
