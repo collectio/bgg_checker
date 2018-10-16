@@ -6,7 +6,8 @@ class App extends Component {
         super();
         this.state = {
             query: '',
-            games: [],
+            message: null,
+            games: null,
         };
     }
     componentDidMount() {
@@ -18,24 +19,27 @@ class App extends Component {
     }
     searchBGG(query) {
         console.log(query)
+        if (query==='') return this.setState({games: null, message: ''});
+        this.setState({games: null, message: '検索中…'});
         fetch(`https://api.collectio.jp/bggapi/search?query=${encodeURIComponent(query)}&type=boardgame`, {
             mode: 'cors'
         }).then((r) => r.json()).then((r) => {
             console.log(r)
             if (r.status === 'ok') {
                 if (r.data.items.total == 0) {
-    
+                    this.setState({message: '見つかりませんでした'});
                 } else if (r.data.items.total == 1) {
                     const game = r.data.items.item;
                     console.log(game.name.value)
                     this.search(game.id);
-                    this.setState({games: [game]});
+                    this.setState({games: [game], message: '1件見つかりました'});
                 } else {
-                    r.data.items.item.map((game) => {
+                    const games = r.data.items.item;
+                    games.map((game) => {
                         console.log(game)
                         this.search(game.id);
                     });
-                    this.setState({games: r.data.items.item});
+                    this.setState({games: games, message: games.length + '件見つかりました'});
                 }
             }
         });
@@ -56,12 +60,15 @@ class App extends Component {
     render() {
         return <div>
             <form action="" ref="form">
-                <input type="text" name="q" ref="q" value={this.state.query} onChange={() => this.setState({query: this.refs.q.value})} />
+                <input type="text" name="q" ref="q" autoComplete="off" value={this.state.query} onChange={() => this.setState({query: this.refs.q.value})} />
                 <button>検索</button>
             </form>
             <p>※ゲーム名の別名でヒットするケースがあるので注意</p>
             <div className="games">
-                {this.state.games.map((game) => (
+                {this.state.message ? (
+                    <p>{this.state.message}</p>
+                ) : null}
+                {this.state.games && this.state.games.map((game) => (
                     <div className="game" key={game.id}>
                         {game.name.value} - {game.yearpublished ? game.yearpublished.value : ''}
                         <a ref={game.id} target="_blank">[検索中...]</a>
