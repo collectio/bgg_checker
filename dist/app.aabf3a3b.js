@@ -21229,7 +21229,7 @@ var App = function (_Component) {
                             _this3.search(game);
                         });
                         setTimeout(function () {
-                            games.slice(3, 10).map(function (game) {
+                            games.slice(2, 10).map(function (game) {
                                 // console.log(game)
                                 _this3.search(game);
                             });
@@ -21323,11 +21323,41 @@ var App = function (_Component) {
                         );
                     }),
                     this.state.showCreateButton ? _react2.default.createElement(
-                        'a',
-                        { href: 'https://db.collectio.jp/wp-admin/post-new.php?post_title=' + encodeURIComponent(this.state.showCreateButton) + '&etitle=' + encodeURIComponent(this.state.showCreateButton), target: '_blank' },
-                        '\u300C',
-                        this.state.showCreateButton,
-                        '\u300D\u3067\u65B0\u898F\u4F5C\u6210'
+                        'ul',
+                        null,
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: 'https://db.collectio.jp/wp-admin/edit.php?post_type=post&s=azul' + encodeURIComponent(this.state.showCreateButton) + '}', target: '_blank' },
+                                '\u300C',
+                                this.state.showCreateButton,
+                                '\u300D\u3092\u30C7\u30FC\u30BF\u30D9\u30FC\u30B9\u3067\u691C\u7D22'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: 'https://www.google.co.jp/search?q=azul' + encodeURIComponent(this.state.showCreateButton), target: '_blank' },
+                                '\u300C',
+                                this.state.showCreateButton,
+                                '\u300D\u3092Google\u3067\u691C\u7D22'
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'li',
+                            null,
+                            _react2.default.createElement(
+                                'a',
+                                { href: 'https://db.collectio.jp/wp-admin/post-new.php?post_title=' + encodeURIComponent(this.state.showCreateButton) + '&etitle=' + encodeURIComponent(this.state.showCreateButton), target: '_blank' },
+                                '\u300C',
+                                this.state.showCreateButton,
+                                '\u300D\u3067\u65B0\u898F\u4F5C\u6210'
+                            )
+                        )
                     ) : null
                 )
             );
@@ -21367,7 +21397,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63916' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49540' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

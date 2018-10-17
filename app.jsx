@@ -96,9 +96,23 @@ class App extends Component {
                     </div>
                 ))}
                 {this.state.showCreateButton ? (
-                    <a href={`https://db.collectio.jp/wp-admin/post-new.php?post_title=${encodeURIComponent(this.state.showCreateButton)}&etitle=${encodeURIComponent(this.state.showCreateButton)}`} target="_blank">
-                        「{this.state.showCreateButton}」で新規作成
-                    </a>
+                    <ul>
+                        <li>
+                            <a href={`https://db.collectio.jp/wp-admin/edit.php?post_type=post&s=azul${encodeURIComponent(this.state.showCreateButton)}}`} target="_blank">
+                                「{this.state.showCreateButton}」をデータベースで検索
+                            </a>
+                        </li>
+                        <li>
+                            <a href={`https://www.google.co.jp/search?q=azul${encodeURIComponent(this.state.showCreateButton)}`} target="_blank">
+                                「{this.state.showCreateButton}」をGoogleで検索
+                            </a>
+                        </li>
+                        <li>
+                            <a href={`https://db.collectio.jp/wp-admin/post-new.php?post_title=${encodeURIComponent(this.state.showCreateButton)}&etitle=${encodeURIComponent(this.state.showCreateButton)}`} target="_blank">
+                                「{this.state.showCreateButton}」で新規作成
+                            </a>
+                        </li>
+                    </ul>
                 ) : null}
             </div>
         </div>
