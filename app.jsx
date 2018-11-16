@@ -98,7 +98,7 @@ class App extends Component {
                 {this.state.showCreateButton ? (
                     <ul>
                         <li>
-                            <a href={`https://db.collectio.jp/wp-admin/edit.php?post_type=post&s=${encodeURIComponent(this.state.showCreateButton)}}`} target="_blank">
+                            <a href={`https://db.collectio.jp/wp-admin/edit.php?post_type=post&s=${encodeURIComponent(this.state.showCreateButton)}`} target="_blank">
                                 「{this.state.showCreateButton}」をデータベースで検索
                             </a>
                         </li>
