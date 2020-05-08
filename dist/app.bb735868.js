@@ -24028,6 +24028,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function getQueryString() {
+  var params = {};
+  location.search.substr(1).split('&').map(function (param) {
+    var pairs = param.split('=');
+    params[pairs[0]] = decodeURIComponent(pairs[1]);
+  });
+  return params;
+}
+
 var App =
 /*#__PURE__*/
 function (_Component) {
@@ -24039,8 +24048,9 @@ function (_Component) {
     _classCallCheck(this, App);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this));
+    var params = getQueryString();
     _this.state = {
-      query: '',
+      query: params.q ? params.q : '',
       message: null,
       games: null,
       showCreateButton: false
@@ -24052,6 +24062,12 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       var _this2 = this;
+
+      var params = getQueryString();
+
+      if (params.q) {
+        this.searchBGG(params.q);
+      }
 
       this.refs.form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -24242,7 +24258,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52775" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54028" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -1,17 +1,32 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+
+function getQueryString() {
+    var params = {}
+    location.search.substr(1).split('&').map(function(param) {
+        var pairs = param.split('=');
+        params[pairs[0]] = decodeURIComponent(pairs[1]);
+    });
+    return params;    
+}
+
 class App extends Component {
     constructor() {
         super();
+        const params = getQueryString();
         this.state = {
-            query: '',
+            query: params.q ? params.q : '',
             message: null,
             games: null,
             showCreateButton: false, 
         };
     }
     componentDidMount() {
+        const params = getQueryString();
+        if (params.q) {
+            this.searchBGG(params.q)
+        }
         this.refs.form.addEventListener('submit', (e) => {
             e.preventDefault();
             this.searchBGG(this.state.query)
